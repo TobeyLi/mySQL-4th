@@ -1,0 +1,47 @@
+使用WHERE子句来指定搜索条件
+1.WHERE子句的语法
+	SELECT column,… FROM tb_name WHERE definition
+	eg.	SELECT prod_id,prod_price,prod_name FROM Products WHERE prod_price=3.49;
+	+---------+------------+---------------------+
+	| prod_id | prod_price | prod_name           |
+	+---------+------------+---------------------+
+	| BNBG01  |       3.49 | Fish bean bag toy   |
+	| BNBG02  |       3.49 | Bird bean bag toy   |
+	| BNBG03  |       3.49 | Rabbit bean bag toy |
+	+---------+------------+---------------------+
+2.当WHERE子句和ORDER BY子句同时出现时，应该按照什么顺序呢?
+	在同时使用WHERE子句和ORDER BY子句时，要把ORDER BY子句放在WHERE子句之后
+	eg.	SELECT prod_id,prod_price,prod_name FROM Products WHERE prod_price=3.49 ORDER BY prod_name;
+	+---------+------------+---------------------+
+	| prod_id | prod_price | prod_name           |
+	+---------+------------+---------------------+
+	| BNBG02  |       3.49 | Bird bean bag toy   |
+	| BNBG01  |       3.49 | Fish bean bag toy   |
+	| BNBG03  |       3.49 | Rabbit bean bag toy |
+	+---------+------------+---------------------+
+3.WHERE子句支持的操作符
+	运算符				说明
+	=					等于
+	!=					不等于，某些数据库系统也写作 <>
+	>					大于
+	<					小于
+	>=					大于或等于
+	<=					小于或等于
+	BETWEEN … AND …		介于某个范围之内，例：WHERE age BETWEEN 20 AND 30
+	NOT BETWEEN …AND …	不在某个范围之内
+	IN(项1,项2,…)		在指定项内，例：WHERE city IN('beijing','shanghai')
+	NOT IN(项1,项2,…)	不在指定项内
+	LIKE				搜索匹配，常与模式匹配符配合使用
+	NOT LIKE			LIKE的反义
+	IS NULL				空值判断符
+	IS NOT NULL			非空判断符
+	NOT、AND、OR		逻辑运算符，分别表示否、并且、或，用于多个逻辑连接。优先级：NOT > AND > OR
+	%					模式匹配符，表示任意字串，例：WHERE username LIKE '%user'
+	
+	eg.	SELECT cust_name FROM Customers WHERE cust_email IS NULL;
+	+---------------+
+	| cust_name     |
+	+---------------+
+	| Kids Place    |
+	| The Toy Store |
+	+---------------+
