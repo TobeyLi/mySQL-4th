@@ -1,4 +1,4 @@
-使用WHERE子句来指定搜索条件
+﻿使用WHERE子句来指定搜索条件
 1.WHERE子句的语法
 	SELECT column,… FROM tb_name WHERE definition
 	eg.	SELECT prod_id,prod_price,prod_name FROM Products WHERE prod_price=3.49;
@@ -45,3 +45,89 @@
 	| Kids Place    |
 	| The Toy Store |
 	+---------------+
+
+4.AND操作符实现
+	语法：SELECT 列名1，列名2...FROM 表名 WHERE 语句1 AND 语句2;
+	eg.	SELECT prod_id,prod_price,prod_name FROM Products WHERE vend_id='DLL01' AND prod_price<=4;
+	+---------+------------+---------------------+
+	| prod_id | prod_price | prod_name           |
+	+---------+------------+---------------------+
+	| BNBG01  |       3.49 | Fish bean bag toy   |
+	| BNBG02  |       3.49 | Bird bean bag toy   |
+	| BNBG03  |       3.49 | Rabbit bean bag toy |
+	+---------+------------+---------------------+
+	
+	若存在多个过滤条件，即要使用多个AND语句，那么可以使用形式如下：直接将过滤条件连接起来即可。
+	SELECT prod_id,prod_price,prod_name FROM Products WHERE vend_id='DLL01' AND prod_price<=4 AND prod_name='Fish bean bag toy';
+	
+5.OR操作符
+	OR的操作符和AND操作符很像，基本语法都是一样的，但是注意OR操作符存在一个特点，即是短路效应：若前面的关键字匹配上了，则这条记录就会被选择。即满足一个条件即可。
+	语法：SELECT 列名1，列名2...FROM 表名 WHERE 语句1 OR 语句2;
+	eg.	SELECT prod_id,prod_price,prod_name FROM Products WHERE vend_id='DLL01' OR prod_price<=4;
+	+---------+------------+---------------------+
+	| prod_id | prod_price | prod_name           |
+	+---------+------------+---------------------+
+	| BNBG01  |       3.49 | Fish bean bag toy   |
+	| BNBG02  |       3.49 | Bird bean bag toy   |
+	| BNBG03  |       3.49 | Rabbit bean bag toy |
+	| RGAN01  |       4.99 | Raggedy Ann         |
+	+---------+------------+---------------------+
+	
+	同样的，多个OR和多个AND语句用法相同。
+	
+6.求值顺序
+	当组合使用AND 和OR 语句时，要注意优先级：
+	SELECT prod_name,prod_price FROM Products WHERE vend_id='DLL01' OR vend_id='BRS01' AND prod_price>=10;
+	+---------------------+------------+
+	| prod_name           | prod_price |
+	+---------------------+------------+
+	| 18 inch teddy bear  |      11.99 |
+	| Fish bean bag toy   |       3.49 |
+	| Bird bean bag toy   |       3.49 |
+	| Rabbit bean bag toy |       3.49 |
+	| Raggedy Ann         |       4.99 |
+	+---------------------+------------+
+	会发现prod_price 存在小于10 的情况，这是在于求值的顺序不对，这条语句理解的意义是：由供应商BRS01制造的价格为10美元以上的所有产品以及由供应商DLL01制造的
+	所有产品而不管其价格如何。
+	若只要输出价格大于10美元产品，那么该怎么操作呢？  ---->加上括号
+	SELECT prod_name,prod_price FROM Products WHERE (vend_id='DLL01' OR vend_id='BRS01') AND prod_price>=10;
+	+--------------------+------------+
+	| prod_name          | prod_price |
+	+--------------------+------------+
+	| 18 inch teddy bear |      11.99 |
+	+--------------------+------------+
+	这里首先是过滤掉括号中的内容，再处理AND的内容。
+7.IN操作符
+	IN操作符用来指定条件范围，范围中的每个条件都可以进行匹配。IN取一组由逗号分隔、括在圆括号中的合法值。
+	eg.	SELECT prod_name,prod_price FROM Products WHERE vend_id IN ('DLL01','BRS01') ORDER BY prod_name;
+	+---------------------+------------+
+	| prod_name           | prod_price |
+	+---------------------+------------+
+	| 12 inch teddy bear  |       8.99 |
+	| 18 inch teddy bear  |      11.99 |
+	| 8 inch teddy bear   |       5.99 |
+	| Bird bean bag toy   |       3.49 |
+	| Fish bean bag toy   |       3.49 |
+	| Rabbit bean bag toy |       3.49 |
+	| Raggedy Ann         |       4.99 |
+	+---------------------+------------+
+	
+OR与IN的比较
+	相同点：IN操作符完成了与OR相同的功能，即SELECT prod_name,prod_price FROM Products WHERE vend_id IN ('DLL01','BRS01') 与
+	SELECT prod_name,prod_price FROM Products WHERE vend_id='DLL01' OR vend_id='BRS01';结果完全等效
+	不同点：1）在有很多合法选项的时候，IN操作符的语法更加清楚
+			2）在与其他AND和OR操作符组合使用IN时，求值顺序更加容易管理。
+			3）IN操作符一般比一组OR操作符执行的更快。
+			4）IN操作符的最大优点是可以包含其他SELECT语句，能够更动态的建立WHERE子句
+8.NOT操作符
+	WHERE子句中NOT操作符有且只用一个功能，那就是否定其后面所跟的任何条件。
+	SELECT prod_name,prod_price FROM Products WHERE  NOT vend_id='DLL01';    ---->选出制造商不为DLL01的所有产品。
+	+--------------------+------------+
+	| prod_name          | prod_price |
+	+--------------------+------------+
+	| 8 inch teddy bear  |       5.99 |
+	| 12 inch teddy bear |       8.99 |
+	| 18 inch teddy bear |      11.99 |
+	| King doll          |       9.49 |
+	| Queen doll         |       9.49 |
+	+--------------------+------------+
