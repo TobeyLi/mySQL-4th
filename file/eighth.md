@@ -71,16 +71,16 @@
 
 2.聚焦不同的值
 	以上的五个聚集函数都可以如下使用；
-	a)	对所有的行执行，指定ALL参数或不指定参数（因为ALL是默认行为）
-	b)	只包含不同的值，指定DISTINCT参数
-	eg.	SELECT AVG(DISTINCT prod_price) AS avg_price FROM Products WHERE vend_id='DLL01';
-		+-----------+
-		| avg_price |
-		+-----------+
-		|  4.240000 |
-		+-----------+
+		a)	对所有的行执行，指定ALL参数或不指定参数（因为ALL是默认行为）
+		b)	只包含不同的值，指定DISTINCT参数
+		eg.	SELECT AVG(DISTINCT prod_price) AS avg_price FROM Products WHERE vend_id='DLL01';
+			+-----------+
+			| avg_price |
+			+-----------+
+			|  4.240000 |
+			+-----------+
 	在这条语句中，平均值只是参考了各个不同的价格。
-	注意：如果指定列名，则DISTINCT 只能用于COUNT()，DISTINCT 不能使用COUNT(*),同样的，DISTINCT必须使用列名，不能用于计算或者表达式。
+		注意：如果指定列名，则DISTINCT 只能用于COUNT()，DISTINCT 不能使用COUNT(*),同样的，DISTINCT必须使用列名，不能用于计算或者表达式。
 	
 3.组合聚集函数
 	在实际的情况下，SELECT 语句可根据需要包含多个聚集函数：
