@@ -1,4 +1,5 @@
 	·更新和删除数据(UPDATE 和 DELETE)
+	更新和删除表
 1.更新数据
 	当需要更新 （修改）表中的数据的时候，可以使用UPDATE 子句，有两种使用UPDATE 的方式：
 		1)更新表中特定的行
@@ -32,3 +33,17 @@
 		DELETE FROM Customers;
 
 	DELETE 不需要列名或通配符。DELETE 删除整行而不是删除列。要删除特定的列，则是需要UPDATE 语句。
+	
+3.更新表
+	语法：ALTER TABLE 表名 ADD|CHANGE|DROP 列名 类型;
+	eg.	ALTER TABLE Vendors ADD vend_phone varchar(20);
+	语句说明；这即是为 Vendors 表增加新一列 vend_phone.
+	
+	其他的操作同理可得。
+	
+4.删除表
+	语法:DROP TABLE 表名;
+	eg.	DROP TABLE CustCopy;
+	
+5.重命名表
+	rename table 原表名 to 新表名;
